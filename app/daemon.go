@@ -15,11 +15,11 @@ import (
 // Setting up daemon properties.
 func init() {
 	daemon.AppName = "golang-sizeof.tips HTTP server"
-	daemon.PidFile = "logs/sizeof.pid"
+	daemon.PidFile = "sizeof.pid"
 
 	httpPort := ""
 	flag.StringVar(
-		&httpPort, "http", DefaultHttpPort, "port to listen http reauests on",
+		&httpPort, "http", DefaultHttpPort, "port to listen http requests on",
 	)
 
 	// Overwriting default daemonigo "start" action.

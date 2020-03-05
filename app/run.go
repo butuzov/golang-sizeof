@@ -8,8 +8,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gophergala/golang-sizeof.tips/internal/log"
-
 	daemon "github.com/tyranron/daemonigo"
 )
 
@@ -18,23 +16,18 @@ func init() {
 }
 
 func Run() (exitCode int) {
+
 	switch isDaemon, err := daemon.Daemonize(); {
 	case !isDaemon:
 		return
 	case err != nil:
-		log.StdErr("could not start daemon, reason -> %s", err.Error())
+		fmt.Errorf("could not start daemon, reason -> %v", err.Error())
 		return 1
 	}
 
 	var err error
-	appLog, err = log.NewApplicationLogger()
-	if err != nil {
-		log.StdErr("could not create access log, reason -> %s", err.Error())
-		return 1
-	}
-
 	if err = prepareTemplates(); err != nil {
-		log.StdErr("could not parse html templates, reason -> %s", err.Error())
+		fmt.Errorf("could not parse html templates, reason -> %v", err.Error())
 		return 1
 	}
 
@@ -49,15 +42,14 @@ func Run() (exitCode int) {
 		defer close(canExit)
 		if err := http.ListenAndServe(httpPort, nil); err != nil {
 			httpErr <- fmt.Errorf(
-				"creating HTTP server on port '%s' FAILED, reason -> %s",
+				"creating HTTP server on port '%s' FAILED, reason: %v",
 				httpPort, err.Error(),
 			)
 		}
 	}()
 	select {
 	case err = <-httpErr:
-		appLog.Error(err.Error())
-		log.StdErr(err.Error())
+		fmt.Errorf("Http Error recived thogth the channel: %v", err.Error())
 		return 1
 	case <-time.After(300 * time.Millisecond):
 	}
@@ -71,10 +63,10 @@ func Run() (exitCode int) {
 // Notifies parent process that everything is OK.
 func notifyParentProcess() {
 	if err := syscall.Kill(os.Getppid(), syscall.SIGUSR1); err != nil {
-		appLog.Error(
-			"Notifying parent process FAILED, reason -> %s", err.Error(),
+		fmt.Errorf(
+			"Notifying parent process FAILED, reason -> %v", err.Error(),
 		)
 	} else {
-		appLog.Info("Notifying parent process SUCCEED")
+		fmt.Println("Notifying parent process SUCCEED")
 	}
 }
