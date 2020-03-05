@@ -1,12 +1,12 @@
 package app
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"runtime"
 	"strings"
 
-	"github.com/gophergala/golang-sizeof.tips/internal/bindata/static"
+	"github.com/butuzov/golang-sizeof/internal/bindata/static"
 )
 
 func bindHttpHandlers() {
@@ -14,15 +14,16 @@ func bindHttpHandlers() {
 	fileServer.Handle("/", useCustom404(http.FileServer(static.AssetFS())))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
 		defer func() {
 			if p := recover(); p != nil {
 				buf := make([]byte, 1<<16)
 				runtime.Stack(buf, false)
-				reason := fmt.Sprintf("%v: %s", r, buf)
-				appLog.Critical("Runtime failure, reason -> %s", reason)
+				log.Fatalf("Runtime failure %v: %s", r, buf)
 				write500(w)
 			}
 		}()
+
 		switch {
 		case strings.Contains(r.URL.Path, "."):
 			fileServer.ServeHTTP(w, r)
