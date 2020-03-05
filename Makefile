@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = help
 
-BIN ?= $(shell which gs-server)
+BIN ?= $(shell which ./gs-server)
 
 help:
 	@cat $(MAKEFILE_LIST) | \
@@ -15,18 +15,20 @@ help:
 	@echo  ""
 
 # ~~~ Go Lang Size Of ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test:
+	echo $(BIN)
 
 build: ## Build Server
 	go build -ldflags "-w -s" -o "gs-server"
 
 start: ## Start Server
-	$(bin) start
+	$(BIN) start
 
 stop: ## Stop Server
-	$(bin) stop
+	$(BIN) stop
 
 status: ## Show Server status
-	$(bin) status
+	$(BIN) status
 
 restart: ## Restart service
-	$(bin) restart
+	$(BIN) restart
