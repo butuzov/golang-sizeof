@@ -21,17 +21,17 @@ and remember alignment rules.
 
 ## Installing
 
-```bash
-go get https://github.com/butuzov/golang-sizeof
+```bash./gs-
+git clone https://github.com/butuzov/golang-sizeof
 make build
 ```
 
 ## Usage
 
 ```bash
-./gs-server -http=:7777 start
-./gs-server stop
-./gs-server restart
+make start
+make stop
+make restart
 ```
 
 ## Platform support
