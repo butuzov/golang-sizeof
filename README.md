@@ -20,7 +20,7 @@ and remember alignment rules.
 ## Installing
 
 ```bas
-go get -u https://github.com/butuzov/golang-sizeof
+go get -u github.com/butuzov/golang-sizeof
 golang-sizeof
 ```
 
