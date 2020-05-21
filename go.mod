@@ -4,5 +4,5 @@ go 1.14
 
 require (
 	github.com/elazarl/go-bindata-assetfs v1.0.0
-	github.com/tyranron/daemonigo v0.3.1
+	github.com/pkg/errors v0.9.1
 )

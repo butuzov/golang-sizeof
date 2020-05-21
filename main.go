@@ -1,11 +1,15 @@
 package main
 
 import (
-	"os"
+	"log"
 
 	"github.com/butuzov/golang-sizeof/app"
 )
 
 func main() {
-	os.Exit(app.Run())
+	if err := app.Run(); err != nil {
+		log.Fatalln(err)
+	} else {
+		log.Println("Ciao!")
+	}
 }
